@@ -97,7 +97,9 @@ window.FX = (() => {
       const R = 110, R2 = R * R;
       const rt = ring.t < 0 ? -1 : (now - ring.t) / 900;
       let moving = false;
-      const dim = [], hot = [], hotA = [];
+      const dim = [], buckets = [[], [], [], [], [], [], [], []];
+      const sweep = (((now / 4200) % 1) * 1.8 - 0.4) * w; // полоса света раз в ~4 с
+      const waveAmp = reduced ? 0 : 1.6;
       for (let i = 0; i < n; i++) {
         const o = i * 7;
         let x = dots[o], y = dots[o + 1];
@@ -119,20 +121,28 @@ window.FX = (() => {
         dots[o] = x; dots[o + 1] = y; dots[o + 4] = vx; dots[o + 5] = vy;
         if (Math.abs(vx) + Math.abs(vy) > 0.02) moving = true;
         const near = d2 < (R * 1.8) ** 2 ? 1 - Math.sqrt(d2) / (R * 1.8) : 0;
-        (near > 0 ? hot : dim).push(x, y, dots[o + 6] * (1 + near * 0.35));
-        if (near > 0) hotA.push(near);
+        // постоянная жизнь: по слову бежит полоса света и лёгкая волна — работает и без мыши (телефон, Telegram)
+        const band = x - sweep + (y - h) * 0.35;
+        const shine = Math.exp(-(band * band) / (2 * 70 * 70)) * 0.75;
+        const wy = y + Math.sin(hx * 0.018 + now * 0.0022) * waveAmp;
+        const glow = Math.max(near, shine);
+        const rr = dots[o + 6] * (1 + glow * 0.35);
+        if (glow > 0.03) { const b = Math.min(7, (glow * 8) | 0); buckets[b].push(x, wy, rr); } else dim.push(x, wy, rr);
       }
-      ctx.fillStyle = ink; ctx.globalAlpha = 0.09;
+      ctx.fillStyle = ink; ctx.globalAlpha = 0.1;
       ctx.beginPath();
       for (let i = 0; i < dim.length; i += 3) { ctx.moveTo(dim[i] + dim[i + 2], dim[i + 1]); ctx.arc(dim[i], dim[i + 1], dim[i + 2], 0, 6.283); }
       ctx.fill();
       ctx.fillStyle = acc;
-      for (let i = 0, j = 0; i < hot.length; i += 3, j++) {
-        ctx.globalAlpha = 0.09 + hotA[j] * 0.85;
-        ctx.beginPath(); ctx.arc(hot[i], hot[i + 1], hot[i + 2], 0, 6.283); ctx.fill();
-      }
+      buckets.forEach((bk, b) => {
+        if (!bk.length) return;
+        ctx.globalAlpha = 0.12 + ((b + 0.5) / 8) * 0.85;
+        ctx.beginPath();
+        for (let i = 0; i < bk.length; i += 3) { ctx.moveTo(bk[i] + bk[i + 2], bk[i + 1]); ctx.arc(bk[i], bk[i + 1], bk[i + 2], 0, 6.283); }
+        ctx.fill();
+      });
       ctx.globalAlpha = 1;
-      if (visible && (moving || hot.length || (rt >= 0 && rt < 1.2))) raf = requestAnimationFrame(draw);
+      if (visible) raf = requestAnimationFrame(draw);
     }
     function wake() { if (!raf && visible) raf = requestAnimationFrame(draw); }
 
@@ -142,6 +152,11 @@ window.FX = (() => {
       wake();
     });
     addEventListener('pointermove', wake, { passive: true });
+    // палец на телефоне: точки расступаются там, где касаешься, и гаснут после отпускания
+    const touch = (e) => { const t = e.touches[0]; if (t) { pointer.x = t.clientX; pointer.y = t.clientY; } };
+    host.addEventListener('touchstart', touch, { passive: true });
+    host.addEventListener('touchmove', touch, { passive: true });
+    host.addEventListener('touchend', () => setTimeout(() => { pointer.x = pointer.y = -1e5; lx = ly = -1e5; }, 450), { passive: true });
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; wake(); }).observe(host);
     new ResizeObserver(layout).observe(host);
     document.fonts && document.fonts.ready.then(layout);

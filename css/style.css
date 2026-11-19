@@ -489,9 +489,28 @@ a.tile:hover { transform: translateY(-3px); border-color: var(--accent); }
   .sheet { width: 100%; max-width: none; margin: auto 0 0; max-height: 92dvh; }
   .sheet-in { border-radius: 28px 28px 0 0; padding-bottom: env(safe-area-inset-bottom); }
 }
+/* смена раздела: мягкий въезд (работает и там, где нет View Transitions — Telegram на iOS/Android) */
+.view:not([hidden]) { animation: viewIn .55s var(--ease) both; }
+@keyframes viewIn { from { opacity: 0; transform: translateY(14px); } }
+.view-map:not([hidden]) { animation-name: fadeIn; }
+@keyframes fadeIn { from { opacity: 0; } }
+
+/* отклик на нажатие — на телефоне нет наведения, поэтому «пружиним» при касании */
+.store:active, .tile:active, .post:active, .plan:active, .chip:active, .quick button:active, .li:active { transform: scale(.97); transition-duration: .15s; }
+.tabbar a:active svg { transform: scale(.85); }
+@media (hover: none) {
+  .store { transition: transform .5s var(--ease), box-shadow .4s; }
+  .cover > svg.lucide { animation: float 4s ease-in-out infinite; }
+  .store:nth-child(2n) .cover > svg.lucide { animation-delay: -2s; }
+}
+@keyframes float { 50% { transform: translateY(-5px) rotate(-4deg); } }
+
+/* «уменьшить движение» в настройках телефона: оставляем плавные проявления, убираем сдвиги и бесконечные анимации */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .reveal { opacity: 1; transform: none; }
+  .reveal { transform: none; }
+  .view:not([hidden]) { animation-name: fadeIn; }
+  .marquee-track, .m-pin.top circle.halo, .tile-art path, .cover > svg.lucide { animation-duration: 0s; animation-iteration-count: 1; }
+  .pop { animation-name: fadeIn; }
 }
 
 /* ===== внутри Telegram ===== */
