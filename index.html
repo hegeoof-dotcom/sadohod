@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Садгид — навигатор по рынку Садовод</title>
+  <meta name="description" content="Неофициальный гид по рынку Садовод: карта, поиск магазинов, маршрут по павильонам и советы.">
+  <meta name="theme-color" content="#F5F4EF">
+  <script>
+    // тема до отрисовки, чтобы не мигало
+    try { const t = localStorage.getItem('sg-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=202611200112">
+</head>
+<body>
+  <header class="top">
+    <a class="logo" href="#home" aria-label="Садгид — на главную">
+      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="logo-word">Садгид</span>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#home" data-nav="home">Главная</a>
+      <a href="#search" data-nav="search">Поиск</a>
+      <a href="#map" data-nav="map">Карта</a>
+      <a href="#list" data-nav="list">Мой список <b class="count" data-count hidden></b></a>
+      <a href="#guide" data-nav="guide">Гид</a>
+    </nav>
+    <div class="top-actions">
+      <a class="btn btn-ghost sellers-link" href="#sellers" data-nav="sellers">Продавцам</a>
+      <button class="icon-btn" id="theme" aria-label="Сменить тему"><i data-lucide="sun-moon"></i></button>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- ГЛАВНАЯ -->
+    <section class="view" data-view="home">
+      <div class="hero">
+        <canvas class="hero-dots" aria-hidden="true"></canvas>
+        <div class="hero-in">
+          <p class="kicker reveal"><span class="dot-live"></span> Неофициальный гид · 14 км МКАД</p>
+          <h1 class="reveal">Весь Садовод&nbsp;—<br><em>в кармане</em></h1>
+          <p class="lead reveal">Найдите нужный павильон, постройте маршрут по рядам и не потеряйтесь среди тысяч магазинов.</p>
+          <form class="search-big reveal" id="heroSearch" role="search">
+            <i data-lucide="search"></i>
+            <input name="q" placeholder="Пуховик, джинсы, постельное бельё…" autocomplete="off" aria-label="Что ищете">
+            <button class="btn btn-accent magnetic" type="submit">Найти</button>
+          </form>
+          <div class="quick reveal" data-quick></div>
+        </div>
+      </div>
+
+      <div class="marquee" aria-hidden="true"><div class="marquee-track" data-marquee></div></div>
+
+      <div class="wrap">
+        <div class="stats" data-stats>
+          <div class="stat reveal"><b data-counter="0">0</b><span>магазинов в демо-базе</span></div>
+          <div class="stat reveal"><b data-counter="0">0</b><span>категорий товаров</span></div>
+          <div class="stat reveal"><b data-counter="0">0</b><span>вещевых рядов</span></div>
+          <div class="stat reveal"><b data-counter="0">0</b><span>входов на рынок</span></div>
+        </div>
+
+        <div class="sec-head reveal">
+          <h2>Топ продавцов</h2>
+          <a class="link" href="#search">Все магазины <i data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="rail" data-top></div>
+
+        <div class="home-grid">
+          <div>
+            <div class="sec-head reveal"><h2>Лента</h2><span class="muted small">Новинки и акции павильонов</span></div>
+            <div class="feed" data-feed></div>
+          </div>
+          <aside class="side-cards">
+            <a class="tile tile-map reveal" href="#map">
+              <svg class="tile-art" viewBox="0 0 200 120" aria-hidden="true"><path d="M10 100 C 60 100, 50 30, 100 40 S 150 90, 190 20" /></svg>
+              <b>Карта рынка</b><span>Корпуса, ряды, туалеты и банкоматы</span>
+            </a>
+            <a class="tile reveal" href="#list"><i data-lucide="route"></i><b>Маршрут по списку</b><span>Добавьте магазины — соберём путь от входа</span></a>
+            <a class="tile reveal" href="#guide"><i data-lucide="compass"></i><b>Гид новичка</b><span>Как добраться, когда ехать, что взять</span></a>
+            <div class="tile crowd-mini reveal" data-crowd-mini></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПОИСК -->
+    <section class="view" data-view="search" hidden>
+      <div class="wrap">
+        <div class="page-head"><h1 class="h-page">Поиск</h1></div>
+        <div class="search-bar">
+          <i data-lucide="search"></i>
+          <input id="q" type="search" placeholder="Товар, магазин или номер павильона" autocomplete="off">
+          <select id="sort" aria-label="Сортировка">
+            <option value="rel">Сначала рекомендуемые</option>
+            <option value="rating">По рейтингу</option>
+            <option value="price">Сначала дешевле</option>
+            <option value="near">Ближе ко входу</option>
+          </select>
+        </div>
+        <div class="chips" data-cat-chips></div>
+        <div class="filters">
+          <label class="tog"><input type="checkbox" data-f="retail"><span>Розница</span></label>
+          <label class="tog"><input type="checkbox" data-f="opt"><span>Опт</span></label>
+          <label class="tog"><input type="checkbox" data-f="card"><span>Оплата картой</span></label>
+          <label class="tog"><input type="checkbox" data-f="big"><span>Большие размеры</span></label>
+          <div class="seg" role="group" aria-label="Цена">
+            <button data-price="0" class="on">Любая цена</button><button data-price="1">₽</button><button data-price="2">₽₽</button><button data-price="3">₽₽₽</button>
+          </div>
+        </div>
+        <p class="muted small" data-found></p>
+        <div class="grid" data-results></div>
+      </div>
+    </section>
+
+    <!-- КАРТА -->
+    <section class="view view-map" data-view="map" hidden>
+      <div class="map-layout">
+        <div class="map-stage" id="stage">
+          <svg id="map" viewBox="0 0 1000 700" role="img" aria-label="Схема рынка"></svg>
+          <div class="map-tools">
+            <button class="icon-btn" data-zoom="in" aria-label="Приблизить"><i data-lucide="plus"></i></button>
+            <button class="icon-btn" data-zoom="out" aria-label="Отдалить"><i data-lucide="minus"></i></button>
+            <button class="icon-btn" data-zoom="reset" aria-label="Весь рынок"><i data-lucide="maximize"></i></button>
+          </div>
+          <div class="map-search">
+            <i data-lucide="search"></i>
+            <input id="mapQ" placeholder="Найти на карте" autocomplete="off">
+            <div class="map-sugg" data-sugg hidden></div>
+          </div>
+          <p class="map-note">Упрощено по схеме рынка · магазины демо</p>
+        </div>
+        <aside class="map-panel">
+          <div class="panel-sec">
+            <h3>Откуда идём</h3>
+            <select class="ent-select" data-entrances aria-label="Откуда идём"></select>
+          </div>
+          <div class="panel-sec" data-route-panel hidden></div>
+          <div class="panel-sec">
+            <h3>Категории</h3>
+            <div class="legend" data-legend></div>
+          </div>
+          <div class="panel-sec">
+            <h3>Удобства</h3>
+            <div class="legend" data-poi-legend></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- МОЙ СПИСОК -->
+    <section class="view" data-view="list" hidden>
+      <div class="wrap">
+        <div class="page-head">
+          <h1 class="h-page">Мой список</h1>
+          <p class="muted">Добавляйте магазины кнопкой <b>+ В маршрут</b> — построим путь от входа в оптимальном порядке.</p>
+        </div>
+        <div data-list></div>
+      </div>
+    </section>
+
+    <!-- ГИД -->
+    <section class="view" data-view="guide" hidden>
+      <div class="wrap">
+        <div class="page-head"><h1 class="h-page">Гид по Садоводу</h1><p class="muted">Всё, что нужно знать перед поездкой.</p></div>
+        <div class="guide-grid">
+          <article class="card g-how reveal">
+            <h3><i data-lucide="map-pin"></i> Как добраться</h3>
+            <ul class="how">
+              <li><b>Адрес</b><span>Москва, 14-й км МКАД</span></li>
+              <li><b>На машине</b><span>Парковки P1–P6 по периметру, ближе всего к рядам — P1 и P3</span></li>
+            </ul>
+            <h3 style="margin:18px 0 10px"><i data-lucide="bus"></i> Автобусы (по схеме рынка)</h3>
+            <ul class="how" data-transport></ul>
+            <div class="todo-note">Часы работы, выходные и номера автобусов — <em class="todo">уточнить</em></div>
+          </article>
+          <article class="card g-crowd reveal">
+            <h3><i data-lucide="users"></i> Когда меньше людей</h3>
+            <div class="bars" data-bars></div>
+            <p class="muted small">Оценка загруженности по часам. Сейчас: <b data-crowd-now></b></p>
+          </article>
+          <article class="card g-check reveal">
+            <h3><i data-lucide="list-checks"></i> Что взять с собой</h3>
+            <div class="checklist" data-checklist></div>
+          </article>
+          <article class="card g-park reveal">
+            <h3><i data-lucide="car"></i> Где я оставил машину</h3>
+            <p class="muted small">Запомним место — в конце дня не придётся искать.</p>
+            <form class="park" data-park>
+              <input name="spot" placeholder="Например: сектор P3, ряд 12" autocomplete="off">
+              <button class="btn btn-accent" type="submit">Запомнить</button>
+            </form>
+            <p class="park-saved" data-park-saved hidden></p>
+          </article>
+          <article class="card g-wallet reveal">
+            <h3><i data-lucide="wallet"></i> Бюджет поездки</h3>
+            <div class="wallet-top"><div><span class="muted small">Потрачено</span><b data-spent>0 ₽</b></div><div><span class="muted small">Лимит</span><input data-limit inputmode="numeric" placeholder="15 000"></div></div>
+            <div class="meter"><i data-meter></i></div>
+            <form class="wallet-add" data-wallet>
+              <input name="what" placeholder="Что купили" autocomplete="off">
+              <input name="sum" placeholder="₽" inputmode="numeric" autocomplete="off">
+              <button class="icon-btn" aria-label="Добавить покупку"><i data-lucide="plus"></i></button>
+            </form>
+            <ul class="wallet-list" data-wallet-list></ul>
+          </article>
+          <article class="card g-tips reveal">
+            <h3><i data-lucide="lightbulb"></i> Советы</h3>
+            <div class="tips" data-tips></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПРОДАВЦАМ -->
+    <section class="view" data-view="sellers" hidden>
+      <div class="wrap">
+        <div class="sellers-hero">
+          <canvas class="sellers-flow" aria-hidden="true"></canvas>
+          <p class="kicker reveal">Для продавцов</p>
+          <h1 class="reveal">Покупатели ищут вас<br>ещё до приезда</h1>
+          <p class="lead reveal">Для покупателей Садгид бесплатен. Продавцы платят только за продвижение: место в топе, пост в ленте и метку на карте.</p>
+        </div>
+        <div class="plans" data-plans></div>
+        <form class="card apply reveal" data-apply>
+          <h3>Оставить заявку</h3>
+          <div class="apply-grid">
+            <input name="name" placeholder="Название магазина" required>
+            <input name="code" placeholder="Павильон, например А-2-130" required>
+            <input name="contact" placeholder="Telegram или телефон" required>
+            <select name="plan" data-plan-select></select>
+          </div>
+          <button class="btn btn-accent magnetic" type="submit">Отправить заявку</button>
+          <p class="muted small">Демо: заявка никуда не уходит, сохраняется только на этом устройстве.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Разделы">
+    <a href="#home" data-nav="home"><i data-lucide="house"></i><span>Главная</span></a>
+    <a href="#search" data-nav="search"><i data-lucide="search"></i><span>Поиск</span></a>
+    <a href="#map" data-nav="map"><i data-lucide="map"></i><span>Карта</span></a>
+    <a href="#list" data-nav="list"><i data-lucide="route"></i><span>Список</span><b class="count" data-count hidden></b></a>
+    <a href="#guide" data-nav="guide"><i data-lucide="compass"></i><span>Гид</span></a>
+  </nav>
+
+  <dialog class="sheet" id="sheet"><div class="sheet-in" data-sheet></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="js/data.js?v=202611200112"></script>
+  <script src="js/tg.js?v=202611200112"></script>
+  <script src="js/fx.js?v=202611200112"></script>
+  <script src="js/map.js?v=202611200112"></script>
+  <script src="js/app.js?v=202611200112"></script>
+</body>
+</html>
