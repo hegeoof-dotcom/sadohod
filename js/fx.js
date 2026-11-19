@@ -231,5 +231,32 @@ window.FX = (() => {
     });
   }
 
-  return { reveal, counter, magnetic, halftone, flow, themeToggle, reduced };
+  /* ---------- конфетти (микровзаимодействие) ---------- */
+  function burst(x, y) {
+    if (reduced || !x) return;
+    const colors = [css('--accent'), '#6b3cf5', '#d4ff3a', '#ff4d8d', '#ffc633'];
+    for (let i = 0; i < 18; i++) {
+      const c = document.createElement('i');
+      c.className = 'confetti';
+      c.style.cssText = `left:${x}px;top:${y}px;background:${colors[i % colors.length]}`;
+      document.body.appendChild(c);
+      const a = Math.random() * Math.PI * 2, v = 60 + Math.random() * 110;
+      const dx = Math.cos(a) * v, dy = Math.sin(a) * v - 70;
+      c.animate([
+        { transform: 'translate(-50%,-50%) rotate(0) scale(1)', opacity: 1 },
+        { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy + 140}px)) rotate(${Math.random() * 720 - 360}deg) scale(.6)`, opacity: 0 },
+      ], { duration: 900 + Math.random() * 500, easing: 'cubic-bezier(.16,1,.3,1)' }).onfinish = () => c.remove();
+    }
+  }
+
+  /* ---------- стикеры следуют за курсором / наклоном телефона ---------- */
+  function parallax(root) {
+    if (!root || reduced) return;
+    const items = [...root.querySelectorAll('[data-depth]')];
+    const move = (nx, ny) => items.forEach((el) => { const d = +el.dataset.depth; el.style.translate = `${nx * d}px ${ny * d}px`; });
+    addEventListener('pointermove', (e) => move(e.clientX / innerWidth - 0.5, e.clientY / innerHeight - 0.5), { passive: true });
+    addEventListener('deviceorientation', (e) => { if (e.gamma != null) move(Math.max(-1, Math.min(1, e.gamma / 30)) / 2, Math.max(-1, Math.min(1, (e.beta - 40) / 30)) / 2); }, { passive: true });
+  }
+
+  return { reveal, counter, magnetic, halftone, flow, themeToggle, burst, parallax, reduced };
 })();

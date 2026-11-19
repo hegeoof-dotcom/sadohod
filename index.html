@@ -12,8 +12,9 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=202611200144">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=202611200152">
+  <link rel="stylesheet" href="css/emo.css?v=202611200152">
 </head>
 <body>
   <header class="top">
@@ -41,7 +42,7 @@
         <canvas class="hero-dots" aria-hidden="true"></canvas>
         <div class="hero-in">
           <p class="kicker reveal"><span class="dot-live"></span> Неофициальный гид · 14 км МКАД</p>
-          <h1 class="reveal">Весь Садовод&nbsp;—<br><em>в кармане</em></h1>
+          <h1 class="mega reveal">Весь Садовод<br><span class="hl">в кармане</span></h1>
           <p class="lead reveal">Найдите нужный павильон, постройте маршрут по рядам и не потеряйтесь среди тысяч магазинов.</p>
           <form class="search-big reveal" id="heroSearch" role="search">
             <i data-lucide="search"></i>
@@ -50,20 +51,33 @@
           </form>
           <div class="quick reveal" data-quick></div>
         </div>
+        <div class="stickers" aria-hidden="true">
+          <span class="stk s1" data-depth="18"><b>ряд 17</b> →</span>
+          <span class="stk s2 lime" data-depth="-14">пуховик −30%</span>
+          <span class="bubble s3" data-depth="10">где тут пуховики?</span>
+          <span class="bubble s4 violet" data-depth="-20">наааайс 🔥</span>
+          <span class="obj s5 o-violet" data-depth="28"><i data-lucide="shopping-bag"></i></span>
+          <span class="obj s6 o-orange" data-depth="-24"><i data-lucide="map-pin"></i></span>
+          <span class="obj s7 o-pink" data-depth="16"><i data-lucide="heart"></i></span>
+          <span class="obj s8 o-lime" data-depth="-12"><i data-lucide="route"></i></span>
+        </div>
       </div>
 
-      <div class="marquee" aria-hidden="true"><div class="marquee-track" data-marquee></div></div>
+      <div class="tapes" aria-hidden="true">
+        <div class="tape t1"><div class="tape-track" data-marquee></div></div>
+        <div class="tape t2"><div class="tape-track" data-tape2></div></div>
+      </div>
 
       <div class="wrap">
-        <div class="stats" data-stats>
-          <div class="stat reveal"><b data-counter="0">0</b><span>магазинов в демо-базе</span></div>
-          <div class="stat reveal"><b data-counter="0">0</b><span>категорий товаров</span></div>
-          <div class="stat reveal"><b data-counter="0">0</b><span>вещевых рядов</span></div>
-          <div class="stat reveal"><b data-counter="0">0</b><span>входов на рынок</span></div>
+        <div class="bento" data-stats>
+          <div class="bcard b-orange reveal"><i data-lucide="store"></i><b data-counter="0">0</b><span>магазинов в демо-базе</span></div>
+          <div class="bcard b-violet reveal"><i data-lucide="shapes"></i><b data-counter="0">0</b><span>категорий товаров</span></div>
+          <div class="bcard b-lime reveal"><i data-lucide="rows-3"></i><b data-counter="0">0</b><span>вещевых рядов на карте</span></div>
+          <div class="bcard b-ink reveal"><i data-lucide="door-open"></i><b data-counter="0">0</b><span>входов на рынок</span></div>
         </div>
 
         <div class="sec-head reveal">
-          <h2>Топ продавцов</h2>
+          <h2>Топ <span class="hl hl-sm">продавцов</span></h2>
           <a class="link" href="#search">Все магазины <i data-lucide="arrow-right"></i></a>
         </div>
         <div class="rail" data-top></div>
@@ -76,10 +90,11 @@
           <aside class="side-cards">
             <a class="tile tile-map reveal" href="#map">
               <svg class="tile-art" viewBox="0 0 200 120" aria-hidden="true"><path d="M10 100 C 60 100, 50 30, 100 40 S 150 90, 190 20" /></svg>
+              <span class="obj obj-sm o-orange tile-obj"><i data-lucide="map"></i></span>
               <b>Карта рынка</b><span>Корпуса, ряды, туалеты и банкоматы</span>
             </a>
-            <a class="tile reveal" href="#list"><i data-lucide="route"></i><b>Маршрут по списку</b><span>Добавьте магазины — соберём путь от входа</span></a>
-            <a class="tile reveal" href="#guide"><i data-lucide="compass"></i><b>Гид новичка</b><span>Как добраться, когда ехать, что взять</span></a>
+            <a class="tile tile-violet reveal" href="#list"><span class="obj obj-sm o-violet tile-obj"><i data-lucide="route"></i></span><b>Маршрут по списку</b><span>Добавьте магазины — соберём путь от входа</span></a>
+            <a class="tile tile-lime reveal" href="#guide"><span class="obj obj-sm o-lime tile-obj"><i data-lucide="compass"></i></span><b>Гид новичка</b><span>Как добраться, когда ехать, что взять</span></a>
             <div class="tile crowd-mini reveal" data-crowd-mini></div>
           </aside>
         </div>
@@ -219,7 +234,7 @@
         <div class="sellers-hero">
           <canvas class="sellers-flow" aria-hidden="true"></canvas>
           <p class="kicker reveal">Для продавцов</p>
-          <h1 class="reveal">Покупатели ищут вас<br>ещё до приезда</h1>
+          <h1 class="mega reveal">Вас найдут<br><span class="hl">до приезда</span></h1>
           <p class="lead reveal">Для покупателей Садоход бесплатен. Продавцы платят только за продвижение: место в топе, пост в ленте и метку на карте.</p>
         </div>
         <div class="plans" data-plans></div>
@@ -251,10 +266,10 @@
 
   <script src="https://telegram.org/js/telegram-web-app.js?57"></script>
   <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-  <script src="js/data.js?v=202611200144"></script>
-  <script src="js/tg.js?v=202611200144"></script>
-  <script src="js/fx.js?v=202611200144"></script>
-  <script src="js/map.js?v=202611200144"></script>
-  <script src="js/app.js?v=202611200144"></script>
+  <script src="js/data.js?v=202611200152"></script>
+  <script src="js/tg.js?v=202611200152"></script>
+  <script src="js/fx.js?v=202611200152"></script>
+  <script src="js/map.js?v=202611200152"></script>
+  <script src="js/app.js?v=202611200152"></script>
 </body>
 </html>

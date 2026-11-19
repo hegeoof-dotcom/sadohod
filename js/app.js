@@ -124,9 +124,9 @@
   // делегирование кликов по всей странице
   document.addEventListener('click', (e) => {
     const fav = e.target.closest('.fav[data-id]');
-    if (fav) { e.stopPropagation(); toggleList(fav.dataset.id); return; }
+    if (fav) { e.stopPropagation(); toggleList(fav.dataset.id); if (inList(fav.dataset.id)) FX.burst(e.clientX, e.clientY); return; }
     const t = e.target.closest('[data-tolist]');
-    if (t) { toggleList(t.dataset.tolist); t.textContent = inList(t.dataset.tolist) ? '✓ В списке' : '+ В маршрут'; return; }
+    if (t) { toggleList(t.dataset.tolist); if (inList(t.dataset.tolist)) FX.burst(e.clientX, e.clientY); t.textContent = inList(t.dataset.tolist) ? '✓ В списке' : '+ В маршрут'; return; }
     const sm = e.target.closest('[data-showmap]');
     if (sm) { closeSheet(); pendingFly = sm.dataset.showmap; location.hash = '#map'; if (current === 'map') flyPending(); return; }
     if (e.target.closest('[data-close]')) { closeSheet(); return; }
@@ -158,6 +158,8 @@
     });
     const words = Object.values(CATS).map((c) => `<span>${c.name}</span>`).join('');
     $('[data-marquee]').innerHTML = words + words;
+    const t2 = ['Садоход', 'Вход 1–5', '30 рядов', 'Маршрут за секунду', 'Без нервов', 'Найди свой ряд'].map((w) => `<span>${w}</span>`).join('');
+    $('[data-tape2]').innerHTML = t2 + t2 + t2;
 
     const top = STORES.filter((s) => s.promo && s.promo.tier === 'top');
     $('[data-top]').innerHTML = top.map(card).join('');
@@ -490,6 +492,6 @@
     if (byId[TGA.start]) setTimeout(() => openStore(TGA.start), 400);
     else if (VIEWS.includes(TGA.start)) location.hash = '#' + TGA.start;
   }
-  icons(); FX.magnetic();
+  icons(); FX.magnetic(); FX.parallax($('.stickers'));
   document.fonts && document.fonts.ready.then(movePill);
 })();
