@@ -8,7 +8,7 @@
   - ссылка вида t.me/<бот>/<app>?startapp=s12 открывает сразу магазин s12, startapp=map — карту.
 */
 window.TGA = (() => {
-  // Заполнить, когда будет бот: ссылка на Mini App из BotFather, например 'https://t.me/sadgid_bot/app'
+  // Заполнить, когда будет бот: ссылка на Mini App из BotFather, например 'https://t.me/sadohod_bot/app'
   const APP_LINK = '';
 
   const wa = window.Telegram && window.Telegram.WebApp;

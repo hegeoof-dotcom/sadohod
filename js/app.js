@@ -105,7 +105,7 @@
       <div class="sheet-b">
         <p class="muted" style="margin:0">${b.about}</p>
         ${b.floors ? `<div class="b-floors">${b.floors.map(([f, l]) => `<div><b>${f}</b><ul>${l.map((x) => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>` : ''}
-        ${here.length ? `<h3 style="margin-top:16px">Магазины в Садгиде</h3><div class="b-stores">${here.map((s) => `<button data-open="${s.id}">${esc(s.name)}<small>${s.code}</small></button>`).join('')}</div>` : ''}
+        ${here.length ? `<h3 style="margin-top:16px">Магазины в Садоходе</h3><div class="b-stores">${here.map((s) => `<button data-open="${s.id}">${esc(s.name)}<small>${s.code}</small></button>`).join('')}</div>` : ''}
         ${rows ? `<h3 style="margin-top:16px">Ряды</h3><div class="b-stores">${rows}</div>` : ''}
       </div>`;
     icons();
