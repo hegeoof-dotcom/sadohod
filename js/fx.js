@@ -216,7 +216,7 @@ window.FX = (() => {
       const apply = () => {
         root.dataset.theme = next;
         try { localStorage.setItem('sg-theme', next); } catch (err) {}
-        document.querySelector('meta[name="theme-color"]').content = next === 'dark' ? '#0c0e0c' : '#f5f4ef';
+        document.querySelector('meta[name="theme-color"]').content = next === 'dark' ? '#0f0d0c' : '#f5f4ef';
         onChange && onChange();
       };
       if (!document.startViewTransition || reduced) return apply();

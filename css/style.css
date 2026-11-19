@@ -7,11 +7,11 @@
   --muted: #6b6e66;
   --line: rgba(18, 20, 17, .09);
   --line-2: rgba(18, 20, 17, .16);
-  --accent: #17945a;
+  --accent: #e8520c;
   --accent-ink: #ffffff;
-  --accent-soft: rgba(23, 148, 90, .12);
-  --promo: #e89a0c;
-  --promo-soft: rgba(232, 154, 12, .14);
+  --accent-soft: rgba(232, 82, 12, .12);
+  --promo: #f2b200;
+  --promo-soft: rgba(242, 178, 0, .16);
   --map-bg: #e9e8e1;
   --land: #dcdbd3;
   --walk: #f6f5f0;
@@ -25,18 +25,18 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0c0e0c; --surface: #151815; --surface-2: #1d211d; --ink: #edf0e9; --muted: #8d9389;
-    --line: rgba(237,240,233,.08); --line-2: rgba(237,240,233,.15);
-    --accent: #3ddc84; --accent-ink: #052012; --accent-soft: rgba(61,220,132,.13);
-    --promo: #ffb733; --promo-soft: rgba(255,183,51,.13); --map-bg: #0f120f; --land: #181c18; --walk: #252a25; --road-big: #20241f;
+    --bg: #0f0d0c; --surface: #181513; --surface-2: #221e1b; --ink: #f2eee9; --muted: #978e86;
+    --line: rgba(242,238,233,.08); --line-2: rgba(242,238,233,.15);
+    --accent: #ff7a2e; --accent-ink: #1f0b00; --accent-soft: rgba(255,122,46,.14);
+    --promo: #ffc633; --promo-soft: rgba(255,198,51,.13); --map-bg: #12100e; --land: #1c1815; --walk: #2a2522; --road-big: #231f1c;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0c0e0c; --surface: #151815; --surface-2: #1d211d; --ink: #edf0e9; --muted: #8d9389;
-  --line: rgba(237,240,233,.08); --line-2: rgba(237,240,233,.15);
-  --accent: #3ddc84; --accent-ink: #052012; --accent-soft: rgba(61,220,132,.13);
-  --promo: #ffb733; --promo-soft: rgba(255,183,51,.13); --map-bg: #0f120f; --land: #181c18; --walk: #252a25; --road-big: #20241f;
+  --bg: #0f0d0c; --surface: #181513; --surface-2: #221e1b; --ink: #f2eee9; --muted: #978e86;
+  --line: rgba(242,238,233,.08); --line-2: rgba(242,238,233,.15);
+  --accent: #ff7a2e; --accent-ink: #1f0b00; --accent-soft: rgba(255,122,46,.14);
+  --promo: #ffc633; --promo-soft: rgba(255,198,51,.13); --map-bg: #12100e; --land: #1c1815; --walk: #2a2522; --road-big: #231f1c;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35); color-scheme: dark;
 }
 
