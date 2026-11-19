@@ -160,7 +160,17 @@ a.tile:hover { border-color: transparent; transform: translateY(-4px) rotate(-1d
 
 /* шапка и лого */
 .logo-word { font-weight: 800; }
-.logo-mark i:nth-child(3) { background: var(--violet); }
+/* знак «Клей»: оранжевая плашка, три кремовые плитки и лаймовый шар; при наведении плитки меняются местами */
+.logo-mark {
+  width: 36px; height: 36px; padding: 7px; gap: 3px; border-radius: 11px;
+  background: radial-gradient(circle at 25% 15%, rgba(255,255,255,.4), transparent 60%), linear-gradient(135deg, #ff9a3c, #ff4a0a);
+  box-shadow: 0 6px 14px -6px #ff4a0a, inset 0 1px 0 rgba(255,255,255,.45);
+}
+.logo-mark i { border-radius: 4px; background: radial-gradient(circle at 30% 22%, #fff, rgba(255,255,255,0) 60%), linear-gradient(135deg, #fff, #ffd9c2); box-shadow: inset -1px -1.5px 2px rgba(90,20,0,.25); }
+.logo-mark i:nth-child(2) { border-radius: 50%; background: radial-gradient(circle at 30% 25%, #fbffd6, rgba(255,255,255,0) 60%), linear-gradient(135deg, #f2ff9e, #bfe600); }
+.logo:hover .logo-mark i:nth-child(1) { transform: translate(12.5px, 0); }
+.logo:hover .logo-mark i:nth-child(2) { transform: translate(-12.5px, 0); }
+.logo:hover .logo-mark i:nth-child(3) { transform: translate(0, -12.5px); }
 
 /* ---------- конфетти ---------- */
 .confetti { position: fixed; z-index: 300; width: 9px; height: 13px; border-radius: 3px; pointer-events: none; }
